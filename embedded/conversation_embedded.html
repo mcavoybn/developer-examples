@@ -1,6 +1,8 @@
 <!--
   Forsta Embedded Conversation Example
-  Creates an embedded conversation for an already existing user and gives a link to add other users
+  Creates an embedded conversation between a visitor to a website and one or more forsta users
+  Requires a Forsta account and chat token.
+  Please contact https://forsta.io/contact/ to request a developer account
 -->
 <html>
   <head>
@@ -9,39 +11,45 @@
     <!-- Stylesheet to make the example code look nice -->
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
 
-    <!-- Google recaptcha required for the Forsta start conversation API call -->
-     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
      <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 
      <script>
-       function onSubmit(token) {
-
-         // Make sure the error class is hidden if we are retrying
-         $("#errors").addClass("hidden");
+       function onSubmit() {
+         // **********************//
+         // Set these values      //
+         // **********************//
+         forsta_chat_token = "get this token from the forsta admin panel";
+         organization_login_name = "the orgname for your forsta account"
          
-         // Forsta api call to create a conversation
-         $.ajax({
-           url: "https://atlas.forsta.io/v1/conversations",
-           type: "post",
-           data: { captcha: token },
-           success: data => {
-             link = "https://app.forsta.io/@chat/" + data.token;
-             html = '<iframe src="' + link + '" allow="microphone;camera;fullscreen" width=600 height=600></iframe>'
-             $("#embedded").html(html);
-             $("#conversation_link").html('Share the meeting with: <div class="di green b">' + link + "</div>");
-           },
-           
-           // API Error handling. Appends any errors to div id="errors"
-           error: err => {
-             $("#errors").html("");
-             $.each( err.responseJSON, function( key, value ) {
-               $("#errors").append( "<p>" + key + ": " + value + "</p>" );
-             });             
-             $("#errors").removeClass("hidden");
-           }
+         link = "http://app.forsta.io/@embed?token=" + forsta_chat_token;
 
-         });
+          // to user is in the form @user_name:organization_login_name or @tag:organization_login_name
+         link += "&to=@" + $("#contact_person").val() + ":" + organization_login_name;
+
+         // Theme for interface. Options include: dark
+         // link += "&theme=dark";
+
+         link += "&first_name=" + $("input[name=first_name]").val();
+         link += "&last_name=" + $("input[name=last_name]").val();
+         link += "&email=" + $("input[name=email]").val();
+         // link += "&phone=000-000-0000";
+
+         // Enables video calling support (no value required). must include the following allow in the iframe
+         // allow="microphone;camera;"
+         // link += "&allowCalling";
+         
+         // Forces video calling support to ONLY support screen sharing (no value required).
+         // link += "&forceScreenSharing";
+         
+         // Disable top header panel.
+         // link += "&disableHeader";
+         
+         // Disable user commands like /help.
+         // link += "&disableCommands";
+           
+         html = '<iframe src="' + link + '" allow="microphone;camera;fullscreen" width=600 height=600></iframe>'
+         $("#embedded").html(html);
+
        }
      </script>
 
@@ -50,28 +58,45 @@
   <body>
 
     <article class="pa2 pa4-ns helvetica">
-      <h1 class="f3 black-80 pb1 bb b--black-30">Forsta Embedded Conversation</h1>
+      <h1 class="f3 black-70 pb1 bb b--black-30">Forsta Embedded Conversation</h1>
 
       <div id="content" class="">
         <div id="embedded">
-
-          <!-- Recaptcha enabled form that calls back to the onSubmit function defined above -->
-          <form id='demo-form' action="?" method="POST">
+          <form id='demo-form' class="measure mv4">
+            <fieldset id="sign_in" class="ba b--transparent ph0 mh0">
+              <legend class="f3 fw6 ph0 mh0 black-70">Contact Support</legend>
           
-            <!-- Note: This will NOT work unless you are an approved Forsta vendor who has registered their 
-                Recaptcha secret key with our server. Please contact Forsta.io if interested.
-                Once your secret key is configured enter your site key below -->
-            <button class="g-recaptcha link dim br3 ph3 pv2 mb2 dib white bg-green b--green" data-sitekey="add recaptcha key here" data-callback='onSubmit'>
+              <div class="mt3">
+                <div class="db fw6 lh-copy f5 black-70">Contact</div>
+                <select id="contact_person" class="pa w-100 black-70 b--black-20">
+                  <option value="support.person">Support</option>
+                  <option value="sales.person">Sales</option>
+                </select>
+              </div>
+          
+              <div class="mt3">
+                <div class="db fw6 lh-copy f5 black-70">First Name</div>
+                <input type="text" name="first_name" class="pa2 input-reset ba bg-transparent w-100 b--black-20">
+              </div>
+
+              <div class="mt3">
+                <div class="db fw6 lh-copy f5 black-70">Last Name</div>
+                <input type="text" name="last_name" class="pa2 input-reset ba bg-transparent w-100 b--black-20">
+              </div>
+
+              <div class="mt3">
+                <div class="db fw6 lh-copy f5 black-70">Email</div>
+                <input type="email" name="email" class="pa2 input-reset ba bg-transparent w-100 b--black-20">
+              </div>
+            
+            </fieldset>
+          
+            <button class="link dim br3 ph3 pv2 mt3 mb2 dib white bg-green b--green" onclick='onSubmit();'>
               Start Conversation
             </button>
 
           </form>
-        
-          <!-- onSubmit will append API errors to this div -->
-          <div id="errors" class="red hidden"></div>
         </div>
-
-        <p id="conversation_link" class=""></p>
       </div>
 
     </article>
