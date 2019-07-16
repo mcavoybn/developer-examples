@@ -1,0 +1,51 @@
+/* controls the header navbar */
+#f-header-view>.ui.menu {
+    height: 4em;
+    margin: 0;
+    border: 0 none transparent;
+    border-radius: initial;
+    /* sets the color of the header navbar */
+    background-color: black;
+}
+
+/* controls the side navbar where threads are listed and created */
+body>main>nav .f-nav-holder {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0 1.4em 0 1.4em;
+    /* sets the color of the side navbar */
+    background-color: black;
+}
+
+/* controls the welcome page */
+/* the welcome page is shown whenever there is no selected thread */
+.f-thread-view .welcome {
+    padding: 3em;
+    text-align: center;
+    position: relative;
+    height: 100%;
+}
+
+/* the top right nav dropdown */
+#f-header-view .f-toc-menu.visible {
+    transition: max-height 200ms ease-out, visibility 200ms;
+    visibility: visible;
+    max-height: 100vh;
+    /* changing this color will change the border color of the top right  */
+    background-color: white;
+}
+
+/* the inner part of the top right nav dropdown */
+#f-header-view .f-toc-menu .ui.menu {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin: 0 0 4px 4px;
+    max-height: 80vh;
+    overflow-y: auto;
+    /* changing this color will change the color of the top right navbar */
+    background-color: white;
+}
