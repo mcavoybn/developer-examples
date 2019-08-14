@@ -49,3 +49,15 @@ body>main>nav .f-nav-holder {
     /* changing this color will change the color of the top right navbar */
     background-color: white;
 }
+
+/* Controls each thread in the left nav bar */
+body>main>nav .f-nav-items .f-nav-item.active:not(.dragging) .f-nav-contents {
+    background: #98252a !important;
+    box-shadow: 0.1em 0.1em 0.25em 0.05em rgba(0,0,0,0.5);
+    color: white;
+}
+
+/* Changes the border color on the top of the left nav bar */
+body>main>nav .f-nav-view.f-recent .f-nav-header {
+    border-top: 3px solid #98252a;
+}
