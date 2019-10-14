@@ -6,12 +6,10 @@ use GuzzleHttp\Client;
 $client = new GuzzleHttp\Client();
 
 # login as admin to retrieve jwt
-$admin_username = '@admin.user:your.organization';
-$admin_password = 'password';
+$admin_user_auth_token = '';
 $loginResponse = $client->post('https://atlas.forsta.io/v1/login/', [
     'json' =>  [
-        'fq_tag' => $admin_username,
-        'password' => $admin_password
+        'userauthtoken' => $admin_user_auth_token    
     ]
 ]);
 $loginResponseJson = json_decode($loginResponse->getBody()->getContents());
