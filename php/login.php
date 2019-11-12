@@ -1,13 +1,18 @@
-<?php 
-require 'vendor/autoload.php';
+<?php
+
+$tag_slug = $_REQUEST["tag_slug"];
+$password = $_REQUEST["password"];
+
+print_r($last_name);
+print_r($email);
+print_r($tag_slug);
 
 $client = new GuzzleHttp\Client();
 
-# login as admin to retrieve jwt
 $adminUserAuthToken = '';
 $loginResponse = $client->post('https://atlas.forsta.io/v1/login/', [
     'json' =>  [
-        'userauthtoken' => $adminUserAuthToken    
+        'userauthtoken' => $adminUserAuthToken
     ]
 ]);
 $loginResponseJson = json_decode($loginResponse->getBody()->getContents());
@@ -28,15 +33,5 @@ $createUserResponse = $client->post('https://atlas.forsta.io/v1/user/', [
 $createUserResponseJson = json_decode($createUserResponse->getBody()->getContents());
 $newUserId = $createUserResponseJson->id;
 
-# add the user to the tag
-$tagId = 'Auth Token Description';
-$postAuthTokenResponse = $client->post('https://atlas.forsta.io/v1/tag/', [
-    'headers' => [
-        'Authorization' => $jwt
-    ],
-    'json' =>  [
-        'userid' => $newUserId,
-        'description' => $tokenDescription
-    ]
-]);
-?>
+// response
+print_r("success");
